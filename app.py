@@ -49,7 +49,7 @@ def interpretar_spo2(spo2_promedio, altitud):
 
 # --- PANEL LATERAL: MODO DEMO PARA EL PROFESOR ---
 with st.sidebar:
-    st.header("👨‍🏫 Panel de Sustentación")
+    st.header("👨‍🏫 Panel de Bioseguridad")
     st.info("Este panel demuestra la bioseguridad. En la vida real, el técnico no ve esto, el token se lo dicta el especialista.")
     
     st.write(f"**Reloj del Sistema:** {hora_simulada.strftime('%H:%M')}")
@@ -126,6 +126,14 @@ else:
                 fig.add_scatter(y=vector_crudo[:625], name="Señal Cruda", opacity=0.35, line=dict(color='gray'))
                 fig.add_scatter(y=vector_limpio[:625], name="Señal Filtrada", line=dict(color='#ff4b4b', width=2))
                 st.plotly_chart(fig, use_container_width=True)
+                # Bloque técnico explicativo para la sustentación
+            with st.expander("🔍 Detalles de los filtros aplicados "):
+                st.markdown("""
+                *Filtros Digitales Implementados en la Tubería (Pipeline):*
+                1. *Filtro Notch IIR (60 Hz):* Diseñado con un factor de calidad $Q = 30$ para remover la interferencia de la línea eléctrica sin atenuar los complejos QRS adyacentes.
+                2. *Filtro Pasa-Bajas Butterworth (4to Orden):* Frecuencia de corte configurada a $40\text{ Hz}$ para eliminar ruido muscular (electromiográfico) y picos de alta frecuencia.
+                3. *Fase Cero (filtfilt):* Se utiliza filtrado bidireccional para asegurar que el desfase sea exactamente cero, manteniendo la alineación temporal de las ondas P, QRS y T.
+                """)
 
         except Exception as e:
             st.error(f"Error al analizar el archivo: {e}")
